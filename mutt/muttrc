@@ -1,0 +1,184 @@
+# vim: ft=muttrc
+
+  set folder           = ~/Mail
+  set header_cache     = ~/Mail/cache/headers
+  set mailcap_path     = ~/.cfg/mail/mutt/mailcap   # entries for filetypes
+  set tmpdir           = ~/.tmp
+  #set alias_file      = ~/.mutt/aliases
+  #set alias_format    = "%4n %t %-20a %r"
+
+# Basic Options --------------------------------------
+unset wait_key
+  set mbox_type         = Maildir
+  set timeout           = 3
+  set mail_check        = 0
+  set sendmail_wait     = 0
+  set text_flowed = yes
+unset move
+  set delete
+unset confirmappend
+  set quit
+unset mark_old
+  set beep_new
+  set pipe_decode
+  set thorough_search
+  set mime_forward = yes
+
+# print the email
+set print_command="~/.cfg/mail/bin/mutt_print.sh"
+set print="yes"
+set print_split
+macro index p <display-toggle-weed><print-message><display-toggle-weed><exit>
+macro pager p <display-toggle-weed><print-message><display-toggle-weed>
+
+# Sidebar Patch --------------------------------------
+set sidebar_delim   = ' || '
+set sidebar_visible = yes
+set sidebar_width   = 25
+color sidebar_new yellow default
+bind index,pager <up> sidebar-prev
+bind index,pager <down> sidebar-next
+bind index,pager <right> sidebar-open
+macro index,pager B '<enter-command>toggle sidebar_visible<enter>'
+
+# Status Bar -----------------------------------------
+set status_chars  = " *%A"
+set status_format = "───[ Folder: %f ]───[%r%m messages%?n? (%n new)?%?d? (%d to delete)?%?t? (%t tagged)? ]───%>─%?p?( %p postponed )?───"
+
+# Header Options -------------------------------------
+ignore *
+unignore from: to: cc: date: subject:
+unhdr_order *     # some distros order things by default
+hdr_order from: to: cc: date: subject:
+
+# Account Settings -----------------------------------
+
+# default inbox
+  set spoolfile         = "+heconghui@gmail.com/INBOX"
+  alternates heconghui2002@163\.com
+
+
+# Other special folders.
+set postponed = "+heconghui@gmail.com/drafts"
+
+# Index View Options ---------------------------------
+  set date_format       = "%m/%d/%y at %I:%M%P"
+  set index_format      = "%3C %Z %[!%m/%d] %-17.17F %s"
+  set sort              = threads
+  set sort_aux          = reverse-last-date-received
+  set sort_re
+  set reply_regexp      = "^(([Rr][Ee]?(\[[0-9]+\])?: *)?(\[[^]]+\] *)?)*"
+  set uncollapse_jump      # don't collapse on an unread message
+
+# Pager View Options ---------------------------------
+  set pager_index_lines = 10
+  set pager_context     = 5
+  set pager_stop
+  set menu_scroll
+  set tilde
+unset markers
+  set quote_regexp      = "^( {0,4}[>|:#%]| {0,4}[a-z0-9]+[>|]+)+"
+
+auto_view text/html
+alternative_order text/plain text/enriched text/html
+
+# View attachments properly.
+bind attach <return> view-mailcap
+
+# View URL
+macro pager \cb <pipe-entry>'urlview'<enter> 'Follow links with urlview'
+
+# query contact
+set query_command = "abook --datafile ~/.cfg/mail/abook/addressbook --mutt-query '%s'"
+bind editor <Tab> complete-query
+macro index,pager A "<pipe-message>abook --add-email-quiet<return>" "add the sender address to abook"
+
+# Compose View Options -------------------------------
+  set realname          = "Conghui He"
+set envelope_from                    # which from?
+set sig_dashes                       # dashes before sig
+  set edit_headers
+  set fast_reply
+  set askcc
+set fcc_attach                       # save attachments with the body
+unset mime_forward                   # forward attachments as part of body
+  set forward_format    = "Fwd: %s"
+set attribution = "On %d, %n wrote:" # format of quoting header
+  set reply_to
+  set reverse_name
+  set include
+  set forward_quote
+  set editor            = "vim +:silent+/^$"
+
+# trials
+  set ispell            = "aspell -e -c"
+  set reverse_alias
+  set thread_received
+
+
+
+folder-hook heconghui@gmail\.com/*  source ~/.mutt/accounts/gmail
+folder-hook 1170988320@qq\.com/* source ~/.mutt/accounts/qq
+
+
+#subscribe arch-announce arch-dev-public arch-haskell aur-general \
+          #rubyparley web-devel xmonad yesod
+
+bind index i  noop
+bind index gg first-entry
+bind index G  last-entry
+#bind pager i  exit
+#bind pager q  toggle-quoted
+bind pager j  next-line
+bind pager k  previous-line
+bind pager \cj next-thread
+bind pager \ck previous-thread
+
+bind pager /  search
+bind pager gg top
+bind pager G  bottom
+bind index,pager \# noop
+bind index,pager \& noop
+bind index,pager R  group-reply
+bind index <space>  collapse-thread
+
+
+macro index ,i "<change-folder>!<return>" "go to inbox"
+macro index ,p "<pipe-message>cat > ~/" "save message as"
+macro index ,z "<shell-escape>offlineimap -q -o<return>" "sync IMAP"
+
+macro index ,r \
+  "<tag-pattern>all<return><tag-prefix><clear-flag>N<untag-pattern>all<return>" \
+  "mark all as read"
+
+macro index ,R \
+  "<collapse-all>,r<collapse-all>" \
+  "mark all as read (collapsed)"
+
+# Saner copy/move dialogs
+macro index C "<copy-message>?<toggle-mailboxes>" "copy a message to a mailbox"
+macro index M "<save-message>?<toggle-mailboxes>" "move a message to a mailbox"
+
+macro index S "<enter-command>unset wait_key<enter><shell-escape>mutt-notmuch.py ~/Mail/temporary/search<enter><change-folder-readonly>+temporary/search<enter>" "search mail (using notmuch)"
+
+macro index a "<limit>all\n" "show all messages (undo limit)"
+
+bind index N search-opposite
+bind pager N search-opposite
+
+#source $alias_file
+source ~/.mutt/colors
+source ~/.mutt/mailboxes
+source ~/.mutt/accounts/qq
+source ~/.mutt/accounts/gmail
+
+set allow_8bit                            # allow 8bit otherwise it will damage the chinese characters
+#set charset="UTF-8"
+set send_charset="us-ascii:gbk:UTF-8"
+#set assumed_charset="UTF-8"
+#set assumed_charset="gbk"       #上面两行是来解决gbk编码信件在mutt里乱码用的
+#charset-hook !utf-8 gbk
+#charset-hook ^us-ascii$ gbk
+#charset-hook ^iso-8859-1$ gbk
+#charset-hook ^UTF-8$ UTF-8      #这一行是解决utf8编码在mutt里乱码用的
+#charset-hook .* gbk

@@ -1,0 +1,80 @@
+[general]
+# If the top CFG folder is not named ~/.cfg, than you should change the
+# path of the pythonfile
+pythonfile      = ~/.cfg/mail/offlineimap/offlineimap-helpers.py
+ui              = ttyui
+accounts        = Gmail, QQ
+maxsyncaccounts = 5
+fsync           = False
+
+# Die after 120 seconds of nothing. Probably the connection died ...
+socktimeout     = 60
+
+[Account Gmail]
+localrepository = Gmail-Local
+remoterepository = Gmail-Remote
+status_backend = sqlite
+postsynchook = notmuch new
+
+
+[Repository Gmail-Local]
+type = Maildir
+localfolders = ~/Mail/heconghui@gmail.com
+nametrans = lambda folder: {'drafts':  '[Gmail]/Drafts',
+                            'sent':    '[Gmail]/Sent Mail',
+                            'starred': '[Gmail]/Starred',
+                            'trash':   '[Gmail]/Trash',
+                            'archive': '[Gmail]/All Mail',
+                            }.get(folder, folder)
+
+[Repository Gmail-Remote]
+maxconnections = 1
+type = Gmail
+remoteusereval = get_username("imap.gmail.com")
+remotepasseval = get_password("imap.gmail.com")
+realdelete = no
+nametrans = lambda folder: {'[Gmail]/Drafts':    'drafts',
+                            '[Gmail]/Sent Mail': 'sent',
+                            '[Gmail]/Starred':   'starred',
+                            '[Gmail]/Trash':     'trash',
+                            '[Gmail]/All Mail':  'archive',
+                            }.get(folder, folder)
+
+folderfilter = lambda folder: folder not in ['[Gmail]/Trash',
+                                             'Nagios', # label example
+                                             '[Gmail]/Important',
+                                             '[Gmail]/Spam',
+                                             ]
+
+sslcacertfile = /etc/ssl/certs/ca-certificates.crt
+
+[Account QQ]
+localrepository = QQ-Local
+remoterepository = QQ-Remote
+status_backend = sqlite
+postsynchook = notmuch new
+
+[Repository QQ-Local]
+type = Maildir
+localfolders = ~/Mail/1170988320@qq.com
+nametrans = lambda folder: {'drafts':  'Drafts',
+                            'sent':    'Sent Messages',
+                            'trash':   'Deleted Messages',
+                            }.get(folder, folder)
+
+[Repository QQ-Remote]
+maxconnections = 3
+type = IMAP
+remotehost = imap.qq.com
+remoteusereval = get_username("imap.qq.com")
+remotepasseval = get_password("imap.qq.com")
+realdelete = no
+nametrans = lambda folder: {'Drafts':           'drafts',
+                            'Sent Messages':    'sent',
+                            'Deleted Messages': 'trash',
+                            }.get(folder, folder)
+
+sslcacertfile = /etc/ssl/certs/ca-certificates.crt
+
+
+# vim: ft=cfg

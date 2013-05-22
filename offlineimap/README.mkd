@@ -1,0 +1,8 @@
+The python scripts are used to set up gnome keying for offlineimap 
+password. run the `gnome-keyring-add-imap-password.py` script to setup your 
+password of the offlineimap
+
+For gmail, the server is `imap.gmail.com`, the username is 
+`example@gmail.com`
+
+For QQ, the server is `imap.qq.com`, the username is `example@qq.com`

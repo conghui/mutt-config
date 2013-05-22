@@ -1,0 +1,16 @@
+# Mailboxes to show in the sidebar.
+mailboxes +--------Gmail----- \
+          +heconghui@gmail.com/INBOX \
+          +heconghui@gmail.com/archive \
+          +heconghui@gmail.com/sent \
+          +heconghui@gmail.com/drafts \
+          +heconghui@gmail.com/trash \
+          +------QQ-Mail----- \
+          +1170988320@qq.com/INBOX \
+          +1170988320@qq.com/sent \
+          +1170988320@qq.com/drafts \
+          +1170988320@qq.com/trash \
+          +------Search------ \
+          +temporary/search
+
+# vim: ft=muttrc

@@ -1,0 +1,153 @@
+## Introduction
+The `mutt` mail client is a integration of a bunch of software and it is 
+highly configured. All the configuration files can be found in the 
+repository. You can modify it later or change to your own account.
+
+## offlineimap
+`offlineimap` a Powerful IMAP/Maildir synchronization tool. You can 
+download the emails in the local hard drive; modify the emails at local and 
+synchronize it on the mail server, thus you gain a good performance and 
+fast reaction compared with the web-browser email client. To install 
+`offline imap`, you can run the following command in Ubuntu:
+
+    sudo apt-get install offlineimap
+
+The configuration file is named `~/.offlineimaprc`. I have already got a 
+well configured file in *offlineimap/* directory and I suggest you making a 
+symbolic link to it. 
+
+    cd ~
+    ln -s .cfg/mail/offlineimap/offlineimaprc .offlineimaprc
+
+There are some python scripts in that directory, which are used to better 
+support offlineimap. One of them is `gnome-keyring-add-imap-password.py`. 
+It a tool that can store your password in gnome-keying instead of plain 
+text in the configuration file. You need to run the file and supply your 
+password. You will be asked for some information, For gmail, the server is 
+`imap.gmail.com`, the user name is `example@gmail.com`. For QQ, the server 
+is `imap.qq.com`, the user name is `example@qq.com`
+
+## msmtp (A SMTP Client)
+`msmtp` is a SMTP client that is used to send emails. You need to install 
+`msmtp` in your system. For example, in Ubuntu, the following command 
+should be invoked.
+
+    sudu apt-get install msmtp msmtp-gnome
+
+The configuration file is named `~/.msmtprc`. For simplicity, you can make 
+a copy of the configuration file in *msmtp/* directory, or make a symbolic 
+file to it. 
+
+    cd ~
+    ln -s .cfg/mail/msmtp/msmtprc .msmtprc
+
+When you setup the configuration file and installed `msmtp-gnome`. Another 
+thing is to set up the password. Of course you can store the password in 
+the configuration file in plain text, but the password is the top secret 
+and you don't want to explode it, right? Here, the `gnome-keying` can give 
+a hand to you. The *msmtp/* directory contains a python script 
+`msmtp-gnome-tool.py`, which is a tool to help you store your password in 
+gnome-keying. The script is run in the following format
+
+    ./msmtp-gnome-tool.py -s -e SERVER -u USER
+
+For example, I have a gmail account, named `heconghui@gmail.com`, and the 
+command is 
+
+    ./msmtp-gnome-tool.py -s -e "smtp.gmail.com" -u "heconghui"
+
+## mutt
+Here we reach the core. The hardest part of mutt are the configuration 
+files of mutt. But I have them all well configured so far. Of course, you 
+can make some change on it. But for the startup, you need to make a 
+symbolic link to it.
+
+    cd ~
+    ln -s .cfg/mail/mutt .mutt
+
+The `muttrc` is kept in the *.cfg/mail/mutt* directory and you have made a 
+link to it. So you don't need another ~/.muttrc file.
+
+What's more, mutt supports a sidebar, which I think is a good feature. 
+However, the sidebar is not integrated in the mutt package. You need to 
+install a patch for that. In Ubuntu, run the following command
+
+    sudo apt-get install mutt mutt-patched
+
+## abook
+`abook` is a text base address book. Instead of storing contacts in the 
+aliases in mutt, I use abook because abook can store more information of a 
+contact, such as phone numbers, multiple email addresses. In Ubuntu, the 
+installation command is needed.
+
+    sudo apt-get install abook
+
+The default contacts location is `~/.abook/addressbook`. You can copy your 
+address book there. But for simplicity, I make a alias of `alias 
+abook='abook --datafile ~/.cfg/mail/abook/addressbook'` to use the database 
+in this folder, so that it can be tracked by github to avoid data loss.
+
+## notmuch
+`notmuch` is a thread-based email index, search, tagging program. It is 
+used to search the content of email efficiently. Installation should be 
+invoked first.
+
+    sudo apt-get install notmuch
+
+I have bind a key `S` in mutt to search the content of emails, and download 
+a script for that purpose in *.cfg/mail/bin* directory. You need to modify 
+the *PATH* variable in the configuration file and make of symbolic file to 
+it.
+
+    cd ~
+    ln -s .cfg/mail/notmuch/notmuch-config .notmuch-config
+
+## bin utilities
+In *bin* directory, it includes several scripts
+* offlineimap-daemon: run the offlineimap in the background
+* mutt.octet.filter: identify the file type and invoke the proper program 
+  to the run the attachment with the type *application/octet-stream*.
+* mutt-notmuch.py: search the email
+* mkd_send: you can write your email in `markdown` syntax and `set 
+  sendmail=mkd_send` to send your email in HTML format. It works well for 
+  evernote but fairly not good for other emails.
+* mark_and_send.py: utility used for `mkd_send`
+
+## recommended software
+For the good experience, you need to install some more utilities. It 
+includes:
+
+* sqlite3: helps with performance and CPU usage on large folders
+* openssl: for security
+* ca-certificates: for security 
+* vim: editor
+* WPS: open Microsoft Word files
+* WPS: open Microsoft Excel files
+* eog: image viewer
+* evince: PDF viewer
+* urlview: view url in email
+* pandoc: send email in markdown syntax
+* elinks: view HTML email in mutt
+
+
+## reference
+Thanks to a lot of articles and web pages, otherwise I can't set up my mutt client.
+Some of the scripts in my mutt is copy from others. Here are part of the 
+article that I thinks is valuable.
+
+* [The Homely Mutt](http://stevelosh.com/blog/2012/10/the-homely-mutt/#full-text-searching)
+
+* [A unix style mail setup](https://dev.gentoo.org/~tomka/mail.html)
+
+* [My first mutt](http://mutt.blackfish.org.uk/overview/)
+
+* [Mark's Mutt Fan and Tip page](http://mark.stosberg.com/Tech/mutt.html)
+
+* [pbrisbin / mutt-config](https://github.com/pbrisbin/mutt-config)
+
+* [offlineimap and gnome-keyring](http://www.clasohm.com/blog/one-entry?entry_id=90957)
+* [Mutt Arch Wiki](https://wiki.archlinux.org/index.php/Mutt#Index_Format)
+
+## feedback
+Any suggestion and bug report is appreciate. You can contact 
+Conghui He <heconghui@gmail.com>

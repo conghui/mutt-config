@@ -1,0 +1,12 @@
+  set from      = "1170988320@qq.com"
+  set sendmail  = "/usr/bin/msmtp -a qq"
+  set postponed = "+1170988320@qq.com/Drafts"
+  #set signature = "~/.mutt/accounts/qq_sig"
+
+unset record
+  color status      green         default
+
+macro index ,c "<change-folder>+heconghui@gmail.com/INBOX<return>" "change accounts"
+macro index ,d "<save-message>+1170988320@qq.com/Deleted Messages<enter>" "move message to the trash"
+
+# vim: ft=muttrc

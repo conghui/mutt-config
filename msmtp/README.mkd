@@ -1,0 +1,24 @@
+When you setup the configuration file. Another thing is to set up the 
+password. Of course you can store the password in the configuration file in 
+plain text, but the password is the top secret and you don't want to 
+explode it, right? Here, the `gnome-keying` can give a hand to you. The 
+*msmtp/* directory contains a python script `msmtp-gnome-tool.py`, which is 
+a tool to help you store your password in gnome-keying. The script is run 
+in the following format
+
+    ./msmtp-gnome-tool.py -s -e SERVER -u USER
+
+For example, I have a gmail account, named `heconghui@gmail.com`, and the 
+command is 
+
+    ./msmtp-gnome-tool.py -s -e "smtp.gmail.com" -u "heconghui"
+
+
+Note: 
+1. You must have both `msmtp` and `msmtp-gnome` installed on your Ubuntu 
+   box. 
+2. If you have configured the account in the past. You can remove the info 
+   first and add it again. Delete command is
+
+    ./msmtp-gnome-tool.py -d -e "smtp.gmail.com" -u "heconghui"
+

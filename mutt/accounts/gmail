@@ -1,0 +1,13 @@
+  set from          = "heconghui@gmail.com"
+  set sendmail      = "msmtp -a gmail"
+  set mbox          = "+heconghui@gmail.com/archive"
+  set postponed     = "+heconghui@gmail.com/drafts"
+  #set signature     = "~/.mutt/accounts/gmail_sig"
+unset record
+  color status      cyan         default
+
+macro index ,c "<change-folder>+1170988320@qq.com/INBOX<return>" "change accounts"
+macro index ,d "<save-message>+heconghui@gmail.com/trash<enter>" "move message to the trash"
+macro index e "<save-message>+heconghui@gmail.com/archive<enter>" "archive gmail"
+
+# vim: ft=muttrc

@@ -1,0 +1,2 @@
+#!/bin/sh
+./mark_and_send.py "pandoc -s" | msmtp -a gmail $@
