@@ -6,7 +6,7 @@
 # For other distribution, you can install them manually based on 
 # the required package in the array `package`.
 # 
-# For more information, visit https://github.com/copico/.cfg/tree/master/mail
+# For more information, visit https://github.com/copico/mutt-config
 # or contact heconghui@gmail.com
 
 INSTALL_CMD="apt-get install -y "
@@ -43,7 +43,11 @@ for p in "${package[@]}"; do
   printf "${FORMAT}" "[${COUNTER}/${SIZE}] Installing ${p}" 
 
   # the actual install command
-  $INSTALL_CMD $p &> $LOG_FILE
+  if [ $p != "mutt" ]; then
+    $INSTALL_CMD $p &> $LOG_FILE
+  else
+    $INSTALL_CMD $p
+  fi
 
   # test whether installed correctly
   if [ $? -eq 0 ]; then
@@ -61,17 +65,25 @@ done
 
 printf "${FORMAT}" "Linking the symbolic links"
 
-ln -sf ~/.cfg/mail/offlineimap/offlineimaprc ~/.offlineimaprc && \
-ln -sf ~/.cfg/mail/msmtp/msmtprc ~/.msmtprc && \
-rm ~/.mutt &&  ln -sf ~/.cfg/mail/mutt ~/.mutt && \
-ln -sf ~/.cfg/mail/notmuch/notmuch-config ~/.notmuch-config
+echo
+echo "making ~/.tmp directory"
+mkdir -p ~/.tmp
+
+ln -sf ~/.cfg/mutt-config/offlineimap/offlineimaprc ~/.offlineimaprc && \
+ln -sf ~/.cfg/mutt-config/msmtp/msmtprc ~/.msmtprc && \
+rm -f ~/.mutt &&  ln -sf ~/.cfg/mutt-config/mutt ~/.mutt && \
+ln -sf ~/.cfg/mutt-config/notmuch/notmuch-config ~/.notmuch-config
+
+echo "remove the write access of ~/.msmtprc"
+chown rice:rice ~/.msmtprc
+chmod 600 ~/.msmtprc
 
 printf "finished\n"
 
 echo 
-echo "!!! Please make sure ~/.cfg/mail/bin is in your PATH"
-echo "!!! Plase go to ~/.cfg/mail/msmtp/        to set up smtp       keying"
-echo "!!! Plase go to ~/.cfg/mail/offlineimap/  to set up offlinemap keying"
+echo "!!! Please make sure ~/.cfg/mutt-config/bin is in your PATH"
+echo "!!! Plase go to ~/.cfg/mutt-config/msmtp/        to set up smtp       keying"
+echo "!!! Plase go to ~/.cfg/mutt-config/offlineimap/  to set up offlinemap keying"
 echo ""
 echo "For more information, checkout README.mkd or visit"
-echo "https://github.com/copico/.cfg/tree/master/mail"
+echo "https://github.com/copico/mutt-config"

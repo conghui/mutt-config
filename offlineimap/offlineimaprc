@@ -1,9 +1,9 @@
 [general]
 # If the top CFG folder is not named ~/.cfg, than you should change the
 # path of the pythonfile
-pythonfile      = ~/.cfg/mail/offlineimap/offlineimap-helpers.py
+pythonfile      = ~/.cfg/mutt-config/offlineimap/offlineimap-helpers.py
 ui              = ttyui
-accounts        = Gmail, QQ
+accounts        = Gmail
 maxsyncaccounts = 5
 fsync           = False
 
