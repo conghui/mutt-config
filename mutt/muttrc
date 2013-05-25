@@ -166,10 +166,8 @@ macro index a "<limit>all\n" "show all messages (undo limit)"
 bind index N search-opposite
 bind pager N search-opposite
 
-#source $alias_file
 source ~/.mutt/colors
 source ~/.mutt/mailboxes
-source ~/.mutt/accounts/qq
 source ~/.mutt/accounts/gmail
 
 set allow_8bit                            # allow 8bit otherwise it will damage the chinese characters
